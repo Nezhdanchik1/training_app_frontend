@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface ExerciseEntry {
   exerciseId: string;  // ObjectId в виде строки
@@ -37,7 +38,7 @@ export interface WorkoutPlan {
 })
 
 export class WorkoutPlanService {
-  private apiUrl = 'http://localhost:3000/api/plans';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
