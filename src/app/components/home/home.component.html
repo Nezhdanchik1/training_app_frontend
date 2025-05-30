@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <!-- Приветствие -->
+  <h2>Привет, {{ username }} 👋</h2>
+  <p>Добро пожаловать в ваше фитнес-приложение!</p>
+
+</div>
+
+<!-- Рекомендуемые упражнения -->
+<div>
+  <h5>Рекомендуемые упражнения</h5>
+
+  <!-- Загрузка -->
+  <p *ngIf="loadingExercises">Загрузка рекомендуемых упражнений...</p>
+
+  <!-- Ошибка -->
+  <p *ngIf="errorExercises && !loadingExercises" class="text-danger">{{ errorExercises }}</p>
+
+  <div class="row" *ngIf="!loadingExercises && !errorExercises">
+    <div class="col-md-4 mb-3" *ngFor="let ex of recommendedExercises">
+      <div class="card shadow-sm h-100">
+        <img [src]="ex.imageUrl || defaultImage" alt="{{ ex.name }}" class="card-img-top" style="height: 180px; object-fit: cover;">
+        <div class="card-body d-flex flex-column">
+          <h6 class="card-title">{{ ex.name }}</h6>
+          <p class="text-muted mb-3">{{ ex.muscleGroup }}</p>
+          <a [routerLink]="['/exercises', ex._id]" class="btn btn-outline-primary mt-auto btn-sm">Подробнее</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

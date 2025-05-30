@@ -1,0 +1,40 @@
+<div class="container mt-3">
+  <h2>Упражнения</h2>
+
+  <div class="mb-3 d-flex flex-wrap gap-2">
+    <button class="btn btn-outline-primary" 
+            [class.active]="selectedGroup === ''" 
+            (click)="filterByGroup('')">Все</button>
+    <button *ngFor="let group of muscleGroups" 
+            class="btn btn-outline-primary" 
+            [class.active]="selectedGroup === group"
+            (click)="filterByGroup(group)">
+      {{ group }}
+    </button>
+  </div>
+
+  <button class="btn btn-primary mb-3" routerLink="/exercises/new">Добавить упражнение</button>
+
+  <div *ngIf="loading">Загрузка...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <div class="row">
+    <div class="col-md-6 col-lg-4 col-xl-3 mb-4" *ngFor="let exercise of filteredExercises">
+      <a [routerLink]="['/exercises', exercise._id]" class="text-decoration-none text-dark">
+        <div class="card h-100 shadow-sm">
+          <img 
+            *ngIf="exercise.imageUrl" 
+            [src]="exercise.imageUrl" 
+            class="card-img-top" 
+            alt="Exercise Image"
+            style="object-fit: cover; height: 200px; width: 100%;" 
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ exercise.name }}</h5>
+            <p class="card-text text-muted">{{ exercise.muscleGroup }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

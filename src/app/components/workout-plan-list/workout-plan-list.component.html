@@ -1,0 +1,13 @@
+<div class="container mt-4">
+  <h2>Планы тренировок</h2>
+  <button class="btn btn-primary mb-3" routerLink="/plans/new">➕ Новый план</button>
+
+  <div *ngIf="loading">Загрузка...</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let plan of plans" (click)="goToDetail(plan._id)" style="cursor: pointer;">
+      <strong>{{ plan.name }}</strong> — {{ plan.description || 'без описания' }}
+    </li>
+  </ul>
+</div>

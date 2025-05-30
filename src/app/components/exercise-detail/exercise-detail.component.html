@@ -1,0 +1,18 @@
+<div class="container mt-3" *ngIf="exercise">
+  <h2>{{ exercise.name }}</h2>
+  <p><strong>Группа мышц:</strong> {{ exercise.muscleGroup }}</p>
+  <p><strong>Описание:</strong> {{ exercise.description || 'нет описания' }}</p>
+
+  <div *ngIf="exercise.imageUrl" class="mb-3">
+    <img [src]="exercise.imageUrl"
+        alt="{{ exercise.name }}"
+        class="img-thumbnail w-100"
+        style="max-height: 350px; max-width: 500px; object-fit: cover;" />
+    </div>
+  <button class="btn btn-primary me-2" (click)="goToEdit()">Редактировать</button>
+  <button class="btn btn-danger me-2" (click)="deleteExercise(exercise._id)">Удалить</button>
+  <button class="btn btn-secondary" (click)="goBack()">Назад</button>
+</div>
+
+<div *ngIf="loading">Загрузка...</div>
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>

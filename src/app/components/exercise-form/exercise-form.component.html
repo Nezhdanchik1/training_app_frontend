@@ -1,0 +1,67 @@
+<div class="container mt-3">
+  <h2>{{ isEditMode ? 'Редактировать упражнение' : 'Добавить упражнение' }}</h2>
+
+  <form #exerciseForm="ngForm" (ngSubmit)="onSubmit(exerciseForm)">
+    <div class="mb-3">
+      <label class="form-label">Название</label>
+      <input
+        name="name"
+        type="text"
+        class="form-control"
+        [(ngModel)]="exercise.name"
+        #name="ngModel"
+        required
+      />
+      <div *ngIf="name.invalid && name.touched" class="text-danger">
+        Название обязательно
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Группа мышц</label>
+      <select
+        name="muscleGroup"
+        class="form-select"
+        [(ngModel)]="exercise.muscleGroup"
+        #muscleGroup="ngModel"
+        required
+      >
+        <option value="">Выберите группу</option>
+        <option *ngFor="let group of muscleGroups" [value]="group">{{ group }}</option>
+      </select>
+      <div *ngIf="muscleGroup.invalid && muscleGroup.touched" class="text-danger">
+        Выберите группу мышц
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Описание</label>
+      <textarea
+        name="description"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="exercise.description"
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ссылка на изображение</label>
+      <input
+        name="imageUrl"
+        type="text"
+        class="form-control"
+        [(ngModel)]="exercise.imageUrl"
+      />
+    </div>
+
+    <button
+      type="submit"
+      class="btn btn-success"
+      [disabled]="exerciseForm.invalid || loading"
+    >
+      {{ isEditMode ? 'Сохранить' : 'Создать' }}
+    </button>
+
+    <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+  </form>
+</div>

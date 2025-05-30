@@ -1,0 +1,73 @@
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Редактировать план' : 'Создать план' }}</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label class="form-label">Название плана</label>
+      <input type="text" class="form-control" [(ngModel)]="plan.name" name="name" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Описание</label>
+      <textarea class="form-control" rows="3" [(ngModel)]="plan.description" name="description"></textarea>
+    </div>
+
+    <div *ngFor="let day of plan.days; let i = index" class="card mb-4 shadow-sm">
+  <div class="card-body">
+    <!-- Верхняя панель -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="card-title mb-0">День {{ i + 1 }}</h5>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeDay(i)">Удалить день</button>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Выберите день недели</label>
+      <select class="form-select" [(ngModel)]="day.day" [name]="'day-' + i" required>
+        <option value="">Выберите день</option>
+        <option *ngFor="let d of daysOfWeek" [value]="d">{{ d }}</option>
+      </select>
+    </div>
+
+    <!-- Упражнения -->
+    <div *ngFor="let ex of day.exercises; let j = index" class="row g-2 align-items-end mb-2">
+      <div class="col-md-4">
+        <label class="form-label">Упражнение</label>
+        <select class="form-select" [(ngModel)]="ex.exerciseId" [name]="'exercise-' + i + '-' + j" required>
+          <option [ngValue]="''">Выберите упражнение</option>
+          <option *ngFor="let e of exercises" [ngValue]="e._id">{{ e.name }}</option>
+        </select>
+
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Подходы</label>
+        <input type="number" class="form-control" [(ngModel)]="ex.sets" [name]="'sets-' + i + '-' + j" required />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Повторения</label>
+        <input type="number" class="form-control" [(ngModel)]="ex.reps" [name]="'reps-' + i + '-' + j" required />
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Отдых (сек)</label>
+        <input type="number" class="form-control" [(ngModel)]="ex.rest" [name]="'rest-' + i + '-' + j" />
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button type="button" class="btn btn-outline-danger w-100" (click)="removeExercise(i, j)">✕</button>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-outline-primary mt-2" (click)="addExercise(i)">➕ Добавить упражнение</button>
+  </div>
+</div>
+
+    <div class="d-flex gap-2 mb-3">
+        <button type="button" class="btn btn-secondary" (click)="addDay()">➕ Добавить день</button>
+    </div>
+
+    <button class="btn btn-success" type="submit" [disabled]="loading">
+    {{ isEditMode ? 'Сохранить' : 'Создать' }}
+    </button>
+
+
+    <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+  </form>
+</div>
