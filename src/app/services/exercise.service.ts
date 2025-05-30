@@ -15,7 +15,7 @@ export interface Exercise {
   providedIn: 'root',
 })
 export class ExercisesService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/api/exercises`;
 
   constructor(private http: HttpClient) {}
 

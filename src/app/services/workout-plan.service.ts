@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface ExerciseEntry {
-  exerciseId: string;  // ObjectId в виде строки
+  exerciseId: string;
   sets: number;
   reps: number;
-  rest: number; // в секундах
+  rest: number;
 }
 
 export type WeekDay = 
@@ -30,7 +30,7 @@ export interface WorkoutPlan {
   description?: string;
   days: WorkoutDay[];
   userId?: string;
-  createdAt?: string; // ISO дата в строковом формате
+  createdAt?: string;
 }
 
 @Injectable({
@@ -38,16 +38,12 @@ export interface WorkoutPlan {
 })
 
 export class WorkoutPlanService {
-  private apiUrl = environment.apiUrl;
+  private apiUrl = `${environment.apiUrl}/api/plans`;
 
   constructor(private http: HttpClient) {}
 
   getAllPlans(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
-  }
-
-  getNextWorkout(): Observable<WorkoutPlan> {
-    return this.http.get<WorkoutPlan>(`${this.apiUrl}/next`);
   }
 
   getPlanById(id: string): Observable<any> {
