@@ -32,8 +32,15 @@ export class LoginComponent {
 
     this.authService.login(credentials).subscribe({
       next: (response) => {
-        this.authService.saveToken(response.token);  // сохраняем токен
-        this.router.navigate(['/']);  // переход на главную страницу
+        this.authService.saveToken(response.token);
+        const role = this.authService.getUserRole();
+        console.log(role)
+
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin/users']);
+        } else {
+          this.router.navigate(['/home']);
+        }
       },
       error: (error) => {
         if (error.status === 401) {
@@ -44,5 +51,4 @@ export class LoginComponent {
       }
     });
   }
-
 }

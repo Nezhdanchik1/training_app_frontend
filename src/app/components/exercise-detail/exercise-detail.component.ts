@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExercisesService, Exercise } from '../../services/exercise.service';
 import { CommonModule, Location } from '@angular/common';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-exercise-detail',
@@ -12,6 +13,7 @@ import { CommonModule, Location } from '@angular/common';
 })
 export class ExerciseDetailComponent implements OnInit {
   exercise: Exercise | null = null;
+  role: string = '';
   loading = false;
   error = '';
 
@@ -19,7 +21,8 @@ export class ExerciseDetailComponent implements OnInit {
     private exercisesService: ExercisesService,
     private route: ActivatedRoute,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -27,6 +30,10 @@ export class ExerciseDetailComponent implements OnInit {
     if (id) {
       this.loadExercise(id);
     }
+
+    this.userService.getProfile().subscribe(user => {
+      this.role = user.role;
+    });
   }
 
   loadExercise(id: string) {

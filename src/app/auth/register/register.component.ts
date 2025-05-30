@@ -16,7 +16,7 @@ export class RegisterComponent {
   avatarUrl: string = '';
   password: string = '';
   confirmPassword: string = '';
-  role: string = 'user';
+  role: string = 'USER';
 
   errorMessage: string | null = null;
   successMessage: string | null = null;

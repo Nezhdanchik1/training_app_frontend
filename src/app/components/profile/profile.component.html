@@ -10,9 +10,14 @@
       <h3 class="card-title">{{ username }}</h3>
 
       <div class="d-flex justify-content-center gap-3">
-        <button class="btn btn-primary" [routerLink]="['/profile/edit']">
+
+        <button *ngIf="role !== 'ADMIN'" class="btn btn-primary" [routerLink]="['/profile/edit']">
           Редактировать профиль
         </button>
+        <button *ngIf="role === 'ADMIN'" class="btn btn-primary" [routerLink]="['/admin/profile/edit']">
+          Редактировать профиль
+        </button>
+
         <button class="btn btn-outline-danger" (click)="logout()">
           Выйти
         </button>

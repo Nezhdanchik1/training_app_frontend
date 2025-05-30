@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProfileService } from '../../services/profile.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-profile-edit',
@@ -20,10 +19,10 @@ export class ProfileEditComponent implements OnInit {
   oldPassword: string = '';
   newPassword: string = '';
 
-  constructor(private profileService: ProfileService, private router: Router) {}
+  constructor(private userService: UserService, private location: Location) {}
 
   ngOnInit(): void {
-    this.profileService.getProfile().subscribe((data: any) => {
+    this.userService.getProfile().subscribe((data: any) => {
       this.user = data;
     });
   }
@@ -51,9 +50,9 @@ export class ProfileEditComponent implements OnInit {
       updatedData.password = this.newPassword;
     }
 
-    this.profileService.updateProfile(this.user.id, updatedData).subscribe(() => {
+    this.userService.updateProfile(this.user.id, updatedData).subscribe(() => {
       alert('Профиль обновлен!');
-      this.router.navigate(['/profile']);
+      this.location.back();
     }, error => {
       alert(error.error.message || 'Ошибка при обновлении профиля');
     });

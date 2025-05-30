@@ -5,13 +5,21 @@
 
   <div *ngIf="exercise.imageUrl" class="mb-3">
     <img [src]="exercise.imageUrl"
-        alt="{{ exercise.name }}"
-        class="img-thumbnail w-100"
-        style="max-height: 350px; max-width: 500px; object-fit: cover;" />
-    </div>
-  <button class="btn btn-primary me-2" (click)="goToEdit()">Редактировать</button>
-  <button class="btn btn-danger me-2" (click)="deleteExercise(exercise._id)">Удалить</button>
-  <button class="btn btn-secondary" (click)="goBack()">Назад</button>
+         alt="{{ exercise.name }}"
+         class="img-thumbnail w-100"
+         style="max-height: 350px; max-width: 500px; object-fit: cover;" />
+  </div>
+
+  <!-- Только для тренеров -->
+  <div *ngIf="role === 'COACH'" class="d-flex gap-2 mb-3">
+    <button class="btn btn-outline-primary" (click)="goToEdit()">Редактировать</button>
+    <button class="btn btn-outline-danger" (click)="deleteExercise(exercise._id)">Удалить</button>
+  </div>
+
+  <!-- Кнопка назад -->
+  <div>
+    <button class="btn btn-secondary" (click)="goBack()">Назад</button>
+  </div>
 </div>
 
 <div *ngIf="loading">Загрузка...</div>

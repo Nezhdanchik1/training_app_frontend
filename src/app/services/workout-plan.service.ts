@@ -42,23 +42,32 @@ export class WorkoutPlanService {
 
   constructor(private http: HttpClient) {}
 
-  getAllPlans(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getAllPlans(): Observable<WorkoutPlan[]> {
+    return this.http.get<WorkoutPlan[]>(this.apiUrl);
   }
 
-  getPlanById(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+  getPlanById(id: string): Observable<WorkoutPlan> {
+    return this.http.get<WorkoutPlan>(`${this.apiUrl}/${id}`);
   }
 
-  createPlan(plan: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, plan);
+  getPlansByUser(userId: string): Observable<WorkoutPlan[]> {
+    return this.http.get<WorkoutPlan[]>(`${this.apiUrl}?userId=${userId}`);
+  }
+
+  getPublicPlans(): Observable<WorkoutPlan[]> {
+    return this.http.get<WorkoutPlan[]>(`${this.apiUrl}/public`);
+  }
+
+  createPlan(plan: WorkoutPlan): Observable<WorkoutPlan> {
+    return this.http.post<WorkoutPlan>(this.apiUrl, plan);
   }
 
   deletePlan(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  updatePlan(id: string, plan: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, plan);
+  updatePlan(id: string, plan: WorkoutPlan): Observable<WorkoutPlan> {
+    return this.http.put<WorkoutPlan>(`${this.apiUrl}/${id}`, plan);
   }
+
 }

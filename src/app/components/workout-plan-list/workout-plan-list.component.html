@@ -1,13 +1,57 @@
 <div class="container mt-4">
-  <h2>Планы тренировок</h2>
-  <button class="btn btn-primary mb-3" routerLink="/plans/new">➕ Новый план</button>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Планы тренировок</h2>
+    <button class="btn btn-success" routerLink="/plans/new">
+      <i class="bi bi-plus-circle"></i> Новый план
+    </button>
+  </div>
 
-  <div *ngIf="loading">Загрузка...</div>
+  <div class="btn-group mb-4" role="group">
+    <button
+      type="button"
+      class="btn"
+      [ngClass]="{
+        'btn-outline-primary': filter !== 'my',
+        'btn-primary': filter === 'my'
+      }"
+      (click)="setFilter('my')"
+    >
+      <i class="bi bi-person-fill"></i> Мои планы
+    </button>
+    <button
+      type="button"
+      class="btn"
+      [ngClass]="{
+        'btn-outline-primary': filter !== 'public',
+        'btn-primary': filter === 'public'
+      }"
+      (click)="setFilter('public')"
+    >
+      <i class="bi bi-globe"></i> Готовые планы
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Загрузка...</span>
+    </div>
+  </div>
+
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
 
-  <ul class="list-group">
-    <li class="list-group-item" *ngFor="let plan of plans" (click)="goToDetail(plan._id)" style="cursor: pointer;">
-      <strong>{{ plan.name }}</strong> — {{ plan.description || 'без описания' }}
-    </li>
-  </ul>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4" *ngFor="let plan of plans">
+      <div class="card h-100 shadow-sm" (click)="goToDetail(plan._id)" style="cursor: pointer;">
+        <div class="card-body">
+          <h5 class="card-title mb-2">{{ plan.name }}</h5>
+          <p class="card-text text-muted">
+            {{ plan.description || 'Без описания' }}
+          </p>
+        </div>
+        <div class="card-footer text-end bg-white border-0">
+          <small class="text-muted">Дней: {{ plan.days?.length || 0 }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

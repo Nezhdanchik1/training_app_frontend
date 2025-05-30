@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Exercise, ExercisesService } from '../../services/exercise.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-exercises-list',
@@ -16,13 +17,17 @@ export class ExercisesListComponent implements OnInit {
   muscleGroups: string[] = ['Chest', 'Back', 'Legs', 'Arms', 'Shoulders', 'Core', 'Full Body'];
   selectedGroup: string = '';
 
+  role = '';
   loading = false;
   error = '';
 
-  constructor(private exercisesService: ExercisesService, private router: Router) {}
+  constructor(private exercisesService: ExercisesService, private router: Router, private userService: UserService) {}
 
   ngOnInit(): void {
     this.loadExercises();
+    this.userService.getProfile().subscribe(user => {
+      this.role = user.role;
+    });
   }
 
   loadExercises() {

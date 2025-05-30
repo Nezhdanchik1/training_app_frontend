@@ -3,7 +3,7 @@ import { ExercisesService } from '../../services/exercise.service';
 import { CommonModule } from '@angular/common';
 import { Exercise } from '../../services/exercise.service';
 import { RouterLink } from '@angular/router';
-import { ProfileService } from '../../services/profile.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   errorExercises = '';
 
   constructor(
-    private profileService: ProfileService,
+    private profileService: UserService,
     private exercisesService: ExercisesService
   ) {}
 

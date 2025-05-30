@@ -12,33 +12,54 @@ import { WorkoutPlanListComponent } from './components/workout-plan-list/workout
 import { WorkoutPlanFormComponent } from './components/workout-plan-form/workout-plan-form.component';
 import { WorkoutPlanDetailComponent } from './components/workout-plan-detail/workout-plan-detail.component';
 import { ProfileEditComponent } from './components/profile-edit/profile-edit.component';
+
 import { AuthGuard } from './guard/auth.guard';
+import { AdminRoleGuard } from './guard/admin-role.guard';
+
+import { AdminUserManagementComponent } from './components/admin-user-management/admin-user-management.component'
+import { AdminLayoutComponent } from './components/layout/admin-layout.component';
+import { CoachRoleGuard } from './guard/coach-role.guard';
 
 export const routes: Routes = [
-    // 👇 Маршруты БЕЗ layout
+  // ❗️Публичные маршруты
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
 
-  // 👇 Маршруты С layout
   {
     path: '',
-    component: LayoutComponent, canActivate: [AuthGuard],
+    component: LayoutComponent,
+    canActivate: [AuthGuard],
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile/edit', component: ProfileEditComponent },
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
+
+      // 💪 Упражнения
       { path: 'exercises', component: ExercisesListComponent },
-      { path: 'exercises/new', component: ExerciseFormComponent },
+      { path: 'exercises/new', component: ExerciseFormComponent, canActivate: [CoachRoleGuard] },
       { path: 'exercises/:id', component: ExerciseDetailComponent },
-      { path: 'exercises/edit/:id', component: ExerciseEditComponent },
-      { path: 'plans', component: WorkoutPlanListComponent },              // 📋 список
-      { path: 'plans/new', component: WorkoutPlanFormComponent },          // ➕ создание
-      { path: 'plans/edit/:id', component: WorkoutPlanFormComponent },     // ✏️ редактирование
-      { path: 'plans/:id', component: WorkoutPlanDetailComponent },        // 🔍 детально
+      { path: 'exercises/edit/:id', component: ExerciseEditComponent, canActivate: [CoachRoleGuard] },
+
+      // 📝 Планы тренировок
+      { path: 'plans', component: WorkoutPlanListComponent },
+      { path: 'plans/new', component: WorkoutPlanFormComponent },
+      { path: 'plans/edit/:id', component: WorkoutPlanFormComponent },
+      { path: 'plans/:id', component: WorkoutPlanDetailComponent },
     ]
   },
 
-  // 👇 Редирект на login по умолчанию, если путь не найден
+  {
+    path: '',
+    component: AdminLayoutComponent,
+    canActivate: [AdminRoleGuard, AuthGuard],
+    children: [
+      {
+        path: 'admin/users', component: AdminUserManagementComponent },
+      { path: 'admin/profile', component: ProfileComponent },
+      { path: 'admin/profile/edit', component: ProfileEditComponent },
+    ]
+  },
+
   { path: '**', redirectTo: 'login' }
 ];

@@ -13,7 +13,7 @@
     </button>
   </div>
 
-  <button class="btn btn-primary mb-3" routerLink="/exercises/new">Добавить упражнение</button>
+  <button *ngIf="role === 'COACH'" class="btn btn-primary mb-3" routerLink="/exercises/new">Добавить упражнение</button>
 
   <div *ngIf="loading">Загрузка...</div>
   <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
