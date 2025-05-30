@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ProfileService } from '../../services/profile.service';
 
 @Component({
   selector: 'app-profile-edit',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './profile-edit.component.html',
 })
@@ -19,12 +20,10 @@ export class ProfileEditComponent implements OnInit {
   oldPassword: string = '';
   newPassword: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private profileService: ProfileService, private router: Router) {}
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.get('http://localhost:3000/api/users/profile', { headers }).subscribe((data: any) => {
+    this.profileService.getProfile().subscribe((data: any) => {
       this.user = data;
     });
   }
@@ -41,9 +40,6 @@ export class ProfileEditComponent implements OnInit {
       }
     }
 
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
     const updatedData: any = {
       username: this.user.username,
       email: this.user.email,
@@ -55,7 +51,7 @@ export class ProfileEditComponent implements OnInit {
       updatedData.password = this.newPassword;
     }
 
-    this.http.put(`http://localhost:3000/api/users/${this.user.id}`, updatedData, { headers }).subscribe(() => {
+    this.profileService.updateProfile(this.user.id, updatedData).subscribe(() => {
       alert('Профиль обновлен!');
       this.router.navigate(['/profile']);
     }, error => {
