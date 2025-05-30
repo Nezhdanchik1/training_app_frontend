@@ -7,17 +7,15 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = `${environment.apiUrl}/users`;
+  private apiUrl = `${environment.apiUrl}/api/users`;
 
   constructor(private http: HttpClient) {}
 
   getProfile(): Observable<any> {
-    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-    return this.http.get<any>(`${this.apiUrl}/profile`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/profile`);
   }
 
   updateProfile(id: string, data: any): Observable<any> {
-    const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
-    return this.http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
+    return this.http.put<any>(`${this.apiUrl}/${id}`, data);
   }
 }
